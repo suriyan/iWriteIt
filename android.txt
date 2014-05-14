@@ -1,0 +1,3 @@
+title=iWriteIt
+author=Suriyan Laohaprapanon
+orientation=landscape

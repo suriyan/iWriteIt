@@ -1,0 +1,307 @@
+#
+# iWriteIt - You Like?
+#
+# Copyright (C) 2014 Suriyan Laohaprapanon
+# 
+# For comments, suggestions or other messages, contact me at:
+# <suriyant@gmail.com>
+# 
+# This file is part of iWriteIt.
+# 
+# iWriteIt is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# iWriteIt is distributed in the hope that it will be fun,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with iWriteIt.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+#:kivy 1.4
+
+<DigitBox>:
+    size_hint: 0.5, 0.8
+    text: ""
+    canvas.before:
+        Color:
+            rgba: (1, 1, 1, 0.1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Label:
+        text: root.text
+        font_name: "fonts/RaiNgan.ttf"
+        font_size: 180
+        size: root.size
+        pos: root.pos
+
+<AppSettings>:
+    orientation: 'vertical'
+    padding: 10
+    app: app
+    GridLayout:
+        cols: 2
+        Label:
+            text: 'Music'
+            font_name: "fonts/RaiNgan.ttf"
+            font_size: 32
+        Switch:
+            id: _music
+            active: True
+        Label:
+            text: "Voice"
+            font_name: "fonts/RaiNgan.ttf"
+            font_size: 32
+        Switch:
+            id: _voice
+            active: True
+        Label:
+            text: "Max digits"
+            font_name: "fonts/RaiNgan.ttf"
+            font_size: 32
+        Spinner:
+            id: _maxdigits
+            text: "2"
+            values: "2", "3"
+            font_name: "fonts/RaiNgan.ttf"
+            font_size: 32
+            opacity: 1.0
+        Label:
+            text: "Operation"
+            font_name: "fonts/RaiNgan.ttf"
+            font_size: 32
+        Spinner:
+            id: _operation
+            text: "Plus"
+            values: "Plus", "Minus", "Mix"
+            font_name: "fonts/RaiNgan.ttf"
+            font_size: 32
+            opacity: 1.0
+        Widget:
+            height: 10
+    Button:
+        font_name: "fonts/RaiNgan.ttf"
+        font_size: 40
+        size_hint: 1, 0.1
+        pos_hint: {'bottom': 0.9}
+        text: "Apply"
+        opacity: 1.0
+        on_release: root.write_settings()
+
+<WriteBoard>:
+    digit1: _digit1
+    digit2: _digit2
+    digit3: _digit3
+    digit4: _digit4
+    result_area: _result_area
+    surface: _gesture
+    menu: _menu
+    FloatLayout:
+        GridLayout:
+            id: _menu
+            cols: 1
+            size_hint: 0.2, None
+            pos: 40, root.height - self.height - 40
+            Button:
+                text: "Back"
+                on_release: app.root.manager.current = 'start'
+                font_name: "fonts/RaiNgan.ttf"
+                font_size: 32
+            Button:
+                text: "Clear"
+                font_name: "fonts/RaiNgan.ttf"
+                font_size: 32
+                on_release: app.root.board.clear(True)
+            Button:
+                text: "?"
+                font_name: "fonts/RaiNgan.ttf"
+                font_size: 32
+                on_release: app.root.manager.current = 'help'
+
+        GestureSurface:
+            id: _gesture
+            draw_timeout: 3
+            temporal_window: 1
+            bbox_margin: 10
+            line_width: 3
+            draw_bbox: True
+            use_random_color: True
+            BoxLayout:
+                cols: 1
+                orientation: 'vertical'
+                padding: 40
+                spacing: 10
+                GridLayout:
+                    cols: 4
+                    Label:
+                        id: a4
+                        text: "1"
+                        bold: True
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 180
+                    Label:
+                        id: a3
+                        text: "2"
+                        bold: True
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 180
+                    Label:
+                        id: a2
+                        text: "3"
+                        bold: True
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 180
+                    Label:
+                        id: a1
+                        text: "4"
+                        bold: True
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 180
+                Label:
+                    id: _operator
+                    text: "+"
+                    size_hint: 0.1, 0.1
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 120
+                    pos_hint: {'right': 0.90}
+                GridLayout:
+                    cols: 4
+                    Label:
+                        id: b4
+                        text: "5"
+                        bold: True
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 180
+                    Label:
+                        id: b3
+                        text: "6"
+                        bold: True
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 180
+                    Label:
+                        id: b2
+                        text: "7"
+                        bold: True
+                        underline: True
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 180
+                    Label:
+                        id: b1
+                        text: "8"
+                        bold: True
+                        underline: True
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 180
+                GridLayout:
+                    id: _result_area
+                    cols: 4
+                    DigitBox:
+                        id: _digit4
+                    DigitBox:
+                        id: _digit3
+                    DigitBox:
+                        id: _digit2
+                    DigitBox:
+                        id: _digit1
+# Background description:
+<Background>:
+    source: self.source
+    allow_stretch: True
+    keep_ratio: False
+    size: self.size
+
+<RootWidget>:
+    #This is the root widget's kv definition
+    id: _root
+    manager: manager
+    board: _board
+    settings: _settings
+    ScreenManager:
+        id: manager
+        #size_hint: 1, 1
+        #pos_hint: {'top': 1}
+        Screen:
+            name: 'start'
+            Background:
+                id: background
+                source: 'graphics/background.jpg'
+            GridLayout:
+                cols: 1
+                padding: 50
+                Label:
+                    text: "[b]==> iWriteIt <==[/b]\n\njust write your answer\n\nare you like it?"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 60
+                    halign: 'center'
+                    markup: True
+                GridLayout:
+                    rows: 1
+                    size_hint: 0.8, 0.2    
+                    pos_hint: {'bottom': 0.8}
+                    spacing: 50
+                    Button:
+                        text: "Start"
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 40
+                        on_release: app.start()
+                    Button:
+                        text: "Settings"
+                        on_release: app.settings()
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 40
+        Screen:
+            name: 'writing'
+            Background:
+                id: background
+                source: 'graphics/background.jpg'
+            WriteBoard:
+                id: _board
+                root: _root
+        Screen:
+            name: 'settings'
+            Background:
+                id: background
+                source: 'graphics/background.jpg'
+            GridLayout:
+                cols: 1
+                padding: 50
+                AppSettings:
+                    id: _settings
+                Button:
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 40
+                    size_hint: 0.5, 0.1
+                    pos_hint: {'bottom': 0.9}
+                    text: "Back"
+                    on_release: app.root.manager.current = 'start'
+        Screen:
+            name: 'help'
+            Background:
+                id: background
+                source: 'graphics/background.jpg'
+            GridLayout:
+                cols: 1
+                padding: 50
+                GridLayout:
+                    cols: 1
+                    Label:
+                        text: 'These are writing style support in this version\nWe will support your own writing style soon!'
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 32
+                        halign: 'center'
+                    Label:
+                        text: "0  1  2  3  4\n\n5  6  7  8  9\n"
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 80
+                Button:
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 40
+                    size_hint: 0.5, 0.1
+                    pos_hint: {'bottom': 0.9}
+                    text: "Back"
+                    on_release: app.root.manager.current = 'writing'
