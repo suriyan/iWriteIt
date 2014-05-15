@@ -47,7 +47,7 @@ from random import randint
 from plyer import tts
 from helpers import InfoPopup
 
-__version__ = "0.9.0"
+__version__ = "1.0.0"
 
 MAX_DIGITS = 4
 
