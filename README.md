@@ -132,3 +132,8 @@ BUILD & PACKAGING
 * iOS (TBD)
 
     http://kivy.org/docs/guide/packaging-ios.html
+
+CREDITS & ACKNOWLEDGEMENT
+-------------------------
+
+* Font http://www.f0nt.com/release/raingan/
