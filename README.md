@@ -44,6 +44,7 @@ TESTED TARGET
 * Windows
     - Tested on Windows 8.1 (64-bit)
     - Tested on Windows 7 (32-bit)
+    - Tested on Windows XP (32-bit)
 
 * Linux
     - Tested on Ubuntu 12.10 (32-bit)
@@ -69,7 +70,7 @@ PRE-BUILD BINARIES VERSION
   
     [iWriteIt-0.9.0-debug.apk](https://www.dropbox.com/s/s3jthisv7a71ggd/iWriteIt-0.9.0-debug.apk)
 
-* Windows 8/7 (Standalone executable file, includes all dependencies)
+* Windows 8/7/XP (Standalone executable file, includes all dependencies)
 
     [iWriteIt-0.9.0.exe](https://www.dropbox.com/s/3hmfl2mb9uj283m/iWriteIt-0.9.0.exe)
     
@@ -90,6 +91,15 @@ PRE-BUILD BINARIES VERSION
     For more Pre-built binary versions will available at :-
 
     https://www.dropbox.com/sh/csp47vb5v2xa22v/AADSU-9A7xXwhctxAV7dCYRCa
+
+HISTORY
+-------
+
+* 2014/05/15 (1.0.0)
+    - Implement my gesture load/save/update
+
+* 2014/05/14 (0.9.0)
+    - Initial release
 
 TODO
 ----
