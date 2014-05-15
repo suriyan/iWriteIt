@@ -5,7 +5,7 @@ An application for Kids to practice Addition and Subtraction skills.
 It utilizes Kivy Gesture recognition, especially for `multistroke`
 gesture recognition was just introduced in master branch (1.8.1-dev).
 
-Initially, I've used Tesseract-OCR to recognize hand writing.
+Initially, I've started with Tesseract-OCR to recognize hand writing.
 However, we also need to train it for difference hand writing styles
 and is not easily compare to Kivy Gesture recognition process.
 
@@ -17,6 +17,11 @@ https://github.com/kivy/kivy/tree/master/examples/demo/multistroke
 
 For more attractive and may also help to improve Listening skills.
 Application includes Text to Speech (TTS) feature.
+
+Please visit the following link to see how does it working :-
+
+http://1drv.ms/1nQKnGx
+
 
 PREREQUISITE
 ------------
@@ -48,10 +53,9 @@ TESTED TARGET
     - Tested on 4.2.2 (Samsung Galaxy Note 8)
 
 * MacOSX
-    TBD
+    - Tested on 10.8.5
 
-* iOS
-    TBD
+* iOS (TBD)
 
 SOURCE CODE
 -----------
@@ -65,10 +69,24 @@ PRE-BUILD BINARIES VERSION
   
     [iWriteIt-0.9.0-debug.apk](https://www.dropbox.com/s/s3jthisv7a71ggd/iWriteIt-0.9.0-debug.apk)
 
-* Windows 8/7 (Stanalone executable file, includes all dependencies)
+* Windows 8/7 (Standalone executable file, includes all dependencies)
 
-    [iWriteIt.exe](https://www.dropbox.com/s/3hmfl2mb9uj283m/iWriteIt-0.9.0.exe)
+    [iWriteIt-0.9.0.exe](https://www.dropbox.com/s/3hmfl2mb9uj283m/iWriteIt-0.9.0.exe)
     
+* Linux (Standalone executable file, but excludes `espeak` and `gstreamer`)
+
+    [iWriteIt-0.9.0.bin](https://www.dropbox.com/s/2h6tn3kk27wn1h2/iWriteIt-0.9.0.bin)
+
+    On Ubuntu you can install `espeak` and `gstreamer` with the following command :-
+
+    ```
+    sudo apt-get install espeak gstreamer0.10-plugins-good
+    ```
+
+* Mac OSX
+
+    [iWriteIt-0.9.0.dmg](https://www.dropbox.com/s/bng1rnq27utdovk/iWriteIt-0.9.0.dmg)
+
     For more Pre-built binary versions will available at :-
 
     https://www.dropbox.com/sh/csp47vb5v2xa22v/AADSU-9A7xXwhctxAV7dCYRCa
@@ -79,7 +97,7 @@ TODO
 * User profile for specific gesture data
 * Timer, score and statistics
 * More number practical skills (eg. sequence, multiply, ...)
-* Localize number (eg. Thai)
+* Localize number (ex. Thai)
 * ...
 
 BUILD & PACKAGING
@@ -100,7 +118,7 @@ BUILD & PACKAGING
     ```
 
     See http://kivy.org/docs/guide/packaging-android.html for more detail
-
+    
 * iOS (TBD)
 
     http://kivy.org/docs/guide/packaging-ios.html
