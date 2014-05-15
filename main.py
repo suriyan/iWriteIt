@@ -325,6 +325,8 @@ class iWriteItApp(App):
     title = 'iWriteIt - You Like?'
     if platform == 'win':
         icon = 'graphics/icon-64.ico'
+    elif platform == 'macosx':
+        icon = 'graphics/icon.icns'
     else:
         icon = 'graphics/icon-64.png'
     music = None
@@ -336,7 +338,9 @@ class iWriteItApp(App):
     #    pass
 
     def build(self):
-        self.music = SoundLoader.load('sounds/music.ogg')
+        music = "sounds/music.%s" % ('wav' if platform == 'macosx' else 'ogg')
+        self.music = SoundLoader.load(music)
+        print self.music
         self.play_music()
         self.root = RootWidget(app=self)
         self.speak("Welcome to I Write It")
