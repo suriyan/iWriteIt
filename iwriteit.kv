@@ -23,6 +23,7 @@
 #
 
 #:kivy 1.4
+#:import os os
 
 <DigitBox>:
     size_hint: 0.5, 0.8
@@ -121,7 +122,7 @@
                 text: "?"
                 font_name: "fonts/RaiNgan.ttf"
                 font_size: 32
-                on_release: app.root.manager.current = 'help'
+                on_release: app.root.manager.current = 'mygesture'
 
         GestureSurface:
             id: _gesture
@@ -208,6 +209,120 @@
                         id: _digit2
                     DigitBox:
                         id: _digit1
+
+<MyGestureSavePopup>:
+    title: 'Specify your gesture name'
+    auto_dismiss: True
+    size_hint: None, None
+    size: 400, 400
+    GridLayout:
+        cols: 1
+        spacing: 10
+        padding: 10
+        rows_minimum: {0: 100}
+        TextInput:
+            id: filename
+            multiline: False
+            size_hint: 1, None
+            height: 20
+        Button:
+            id: save_btn
+            text: 'Save'
+            size_hint: 1, None
+            height: 45
+        Button:
+            id: cancel_btn
+            text: 'Cancel'
+            size_hint: 1, None
+            height: 45
+            on_press: root.dismiss()
+
+<MyGestureLoadPopup>:
+    title: "Select your gesture name"
+    auto_dismiss: True
+    size_hint: None, None
+    size: 450, 420
+    FileChooserIconView:
+        id: filechooser
+        size_hint: None, None
+        size: 400, 350
+        filters: ['*.kg']
+        rootpath: os.getcwd() + './gestures'
+
+<MyGestureWidget>
+    surface: _surface
+    GridLayout:
+        cols: 1
+        Label:
+            size_hint: 0.1, None
+            text: 'Please trace the following number(s)\nto update your writing style.'
+            font_name: "fonts/RaiNgan.ttf"
+            font_size: 32
+            halign: 'center'
+        GestureSurface:
+            id: _surface
+            draw_timeout: 3
+            temporal_window: 1
+            bbox_margin: 10
+            line_width: 3
+            draw_bbox: True
+            use_random_color: True
+            GridLayout:
+                pos_hint: {'top': 1, 'right': 1}
+                cols: 5
+                padding: 10
+                DigitBox:
+                    id: _mydigit0
+                    text: "0"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+                DigitBox:
+                    id: _mydigit1
+                    text: "1"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+                DigitBox:
+                    id: _mydigit2
+                    text: "2"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+                DigitBox:
+                    id: _mydigit3
+                    text: "3"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+                DigitBox:
+                    id: _mydigit4
+                    text: "4"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+                DigitBox:
+                    id: _mydigit5
+                    text: "5"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+                DigitBox:
+                    id: _mydigit6
+                    text: "6"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+                DigitBox:
+                    id: _mydigit7
+                    text: "7"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+                DigitBox:
+                    id: _mydigit8
+                    text: "8"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+                DigitBox:
+                    id: _mydigit9
+                    text: "9"
+                    font_name: "fonts/RaiNgan.ttf"
+                    font_size: 80
+
+
 # Background description:
 <Background>:
     source: self.source
@@ -221,10 +336,9 @@
     manager: manager
     board: _board
     settings: _settings
+    my_gesture: _my_gesture
     ScreenManager:
         id: manager
-        #size_hint: 1, 1
-        #pos_hint: {'top': 1}
         Screen:
             name: 'start'
             Background:
@@ -232,7 +346,7 @@
                 source: 'graphics/background.jpg'
             GridLayout:
                 cols: 1
-                padding: 50
+                padding: 30
                 Label:
                     text: "[b]==> iWriteIt <==[/b]\n\njust write your answer\n\nare you like it?"
                     font_name: "fonts/RaiNgan.ttf"
@@ -254,8 +368,15 @@
                         on_release: app.settings()
                         font_name: "fonts/RaiNgan.ttf"
                         font_size: 40
+                Label:
+                    size_hint: 1, 0.1
+                    text: "Copyright (c) 2014 Suriyan Laohaprapanon"
+                    font_size: 10
+                    halign: 'center'
+                    markup: True
         Screen:
             name: 'writing'
+            on_enter: root.board.on_enter()
             Background:
                 id: background
                 source: 'graphics/background.jpg'
@@ -269,7 +390,7 @@
                 source: 'graphics/background.jpg'
             GridLayout:
                 cols: 1
-                padding: 50
+                padding: 30
                 AppSettings:
                     id: _settings
                 Button:
@@ -280,28 +401,39 @@
                     text: "Back"
                     on_release: app.root.manager.current = 'start'
         Screen:
-            name: 'help'
+            name: 'mygesture'
+            on_enter: root.my_gesture.on_enter()
+            on_pre_leave: root.my_gesture.on_pre_leave()
             Background:
                 id: background
                 source: 'graphics/background.jpg'
             GridLayout:
                 cols: 1
-                padding: 50
+                padding: 20
+                MyGestureWidget:
+                    id: _my_gesture
+                    root: _root
                 GridLayout:
-                    cols: 1
-                    Label:
-                        text: 'These are writing style support in this version\nWe will support your own writing style soon!'
-                        font_name: "fonts/RaiNgan.ttf"
-                        font_size: 32
-                        halign: 'center'
-                    Label:
-                        text: "0  1  2  3  4\n\n5  6  7  8  9\n"
-                        font_name: "fonts/RaiNgan.ttf"
-                        font_size: 80
-                Button:
-                    font_name: "fonts/RaiNgan.ttf"
-                    font_size: 40
+                    rows: 1
                     size_hint: 0.5, 0.1
                     pos_hint: {'bottom': 0.9}
-                    text: "Back"
-                    on_release: app.root.manager.current = 'writing'
+                    Button:
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 40
+                        text: "Back"
+                        on_release: app.root.manager.current = 'writing'
+                    Button:
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 40
+                        text: "Clear"
+                        on_release: root.my_gesture.clear()
+                    Button:
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 40
+                        text: "Load"
+                        on_release: root.my_gesture.load()
+                    Button:
+                        font_name: "fonts/RaiNgan.ttf"
+                        font_size: 40
+                        text: "Save"
+                        on_release: root.my_gesture.save()

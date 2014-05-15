@@ -33,6 +33,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.uix.image import Image
+from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 from kivy.clock import Clock
 from kivy.utils import platform
@@ -46,7 +47,6 @@ from random import randint
 from plyer import tts
 from helpers import InfoPopup
 
-# FIXME: require by buildozer?
 __version__ = "0.9.0"
 
 MAX_DIGITS = 4
@@ -109,6 +109,7 @@ class AppSettings(BoxLayout):
 class WriteBoard(FloatLayout):
     """ Write board
     """
+
     digit1 = ObjectProperty()
     digit2 = ObjectProperty()
     digit3 = ObjectProperty()
@@ -159,6 +160,15 @@ class WriteBoard(FloatLayout):
         else:
             return super(WriteBoard, self).on_touch_up(touch)
 
+    def on_enter(self):
+        if self.recognizer is None:
+            self.recognizer = Recognizer()
+            self.surface.bind(on_gesture_discard=self.handle_gesture_discard)
+            self.surface.bind(on_gesture_complete=self.handle_gesture_complete)
+            self.surface.bind(on_gesture_cleanup=self.handle_gesture_cleanup)
+        self.recognizer.db = []
+        self.recognizer.import_gesture(filename='gestures/user')
+
     def clear(self, all=False):
         if all:
             self.canvas.after.clear()
@@ -177,7 +187,7 @@ class WriteBoard(FloatLayout):
     def get_answer(self):
         return eval("%d %s %s" % (self.a, self.oper, self.b))
 
-    def check(self, popup=False):
+    def check(self, popup=False, voice=False):
         a1 = self._to_int(self.digit1.text)
         a2 = self._to_int(self.digit2.text)
         a3 = self._to_int(self.digit3.text)
@@ -187,6 +197,8 @@ class WriteBoard(FloatLayout):
             if popup:
                 self.infopopup.text = "Correct, very good!!!"
                 self.infopopup.open()
+            if voice:
+                self.root.app.speak("Correct answer")
             return True
         else:
             return False
@@ -241,14 +253,7 @@ class WriteBoard(FloatLayout):
             self.b = b
 
     def new(self):
-        if self.recognizer is None:
-            self.recognizer = Recognizer()
-            self.recognizer.import_gesture(filename='gestures/raingan.kg')
-            self.surface.bind(on_gesture_discard=self.handle_gesture_discard)
-            self.surface.bind(on_gesture_complete=self.handle_gesture_complete)
-            self.surface.bind(on_gesture_cleanup=self.handle_gesture_cleanup)
-
-        if self.a is None or self.check(True):
+        if self.a is None or self.check():
             self.clear(True)
             self.new_question()
             self.set_digits(self.a, 'a')
@@ -270,11 +275,133 @@ class WriteBoard(FloatLayout):
         # Don't bother creating Label if it's not going to be drawn
         if surface.draw_timeout == 0:
             return
-
-        text = '[b]Please write a number[/b]'
+        text = "Please write a number"
+        self.root.app.speak(text)
+        text = '[b]%s[/b]' % text
         g._result_label = Label(text=text, markup=True, size_hint=(None, None),
                                 center=(g.bbox['minx'], g.bbox['miny']))
         self.surface.add_widget(g._result_label)
+
+    def handle_gesture_complete(self, surface, g, *l):
+        result = self.recognizer.recognize(g.get_vectors())
+        result._gesture_obj = g
+        result.bind(on_complete=self.handle_recognize_complete)
+
+    def handle_recognize_complete(self, result, *l):
+        # Don't bother creating Label if it's not going to be drawn
+        if self.surface.draw_timeout == 0:
+            return
+
+        best = result.best
+        if best['name'] is None:
+            num = ""
+            self.root.app.speak("Please write a number")
+        else:
+            num = best['name']
+
+        g = result._gesture_obj
+        x = g.bbox['minx']
+        y = g.bbox['miny']
+        w = Widget(pos=(x, y), size=(g.width, g.height))
+        if self.digit1.collide_widget(w):
+            self.digit1.text = num
+        elif self.digit2.collide_widget(w):
+            self.digit2.text = num
+        elif self.digit3.collide_widget(w):
+            self.digit3.text = num
+        elif self.digit4.collide_widget(w):
+            self.digit4.text = num
+
+        if self.check(voice=True):
+            Clock.schedule_once(lambda dt: self.new(), 3)
+        else:
+            self.root.app.speak(num)
+
+
+class MyGestureLoadPopup(Popup):
+    """ My Gesture Load popup
+    """
+    pass
+
+
+class MyGestureSavePopup(Popup):
+    """ My Gesture Save Popup
+    """
+    pass
+
+
+class MyGestureWidget(BoxLayout):
+    """ My Gesture Widget
+    """
+    surface = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super(MyGestureWidget, self).__init__(**kwargs)
+        self.recognizer = None
+        self.load_popup = None
+        self.save_popup = None
+        self.info_popup = None
+
+    def on_enter(self):
+        if self.recognizer is None:
+            self.recognizer = Recognizer()
+            self.surface.bind(on_gesture_discard=self.handle_gesture_discard)
+            self.surface.bind(on_gesture_complete=self.handle_gesture_complete)
+            self.surface.bind(on_gesture_cleanup=self.handle_gesture_cleanup)
+        self.recognizer.db = []
+        self.recognizer.import_gesture(filename='gestures/user')
+
+        if self.load_popup is None:
+            self.load_popup = MyGestureLoadPopup()
+            self.load_popup.ids.filechooser.bind(on_submit=self.do_load)
+        if self.save_popup is None:
+            self.save_popup = MyGestureSavePopup()
+            self.save_popup.ids.save_btn.bind(on_press=self.do_save)
+        if self.info_popup is None:
+            self.info_popup = InfoPopup()
+
+    def on_pre_leave(self):
+        self.recognizer.export_gesture(filename='gestures/user')
+
+    def do_load(self, filechooser, *l):
+        if len(filechooser.selection):
+            self.recognizer.db = []
+        for f in filechooser.selection:
+            self.recognizer.import_gesture(filename=f)
+        self.info_popup.text = ("Loaded %d gestures.\n" %
+                                (len(self.recognizer.db)))
+        self.load_popup.dismiss()
+        self.info_popup.open()
+
+    def do_save(self, *l):
+        path = self.save_popup.ids.filename.text
+        if not path or path == 'default':
+            self.save_popup.dismiss()
+            self.info_popup.text = 'Empty or Invalid gesture name specify'
+            self.info_popup.open()
+            return
+        elif not path.lower().endswith('.kg'):
+            path += '.kg'
+
+        self.recognizer.export_gesture(filename='./gestures/' + path)
+
+        self.save_popup.dismiss()
+        self.info_popup.text = 'Gestures saved!'
+        self.info_popup.open()
+
+    def handle_gesture_cleanup(self, surface, g, *l):
+        if hasattr(g, '_result_label'):
+            surface.remove_widget(g._result_label)
+
+    def handle_gesture_discard(self, surface, g, *l):
+        # Don't bother creating Label if it's not going to be drawn
+        if surface.draw_timeout == 0:
+            return
+
+        text = '[b]Please trace a number[/b]'
+        g._result_label = Label(text=text, markup=True, size_hint=(None, None),
+                                center=(g.bbox['minx'], g.bbox['miny']))
+        surface.add_widget(g._result_label)
 
     def handle_gesture_complete(self, surface, g, *l):
         result = self.recognizer.recognize(g.get_vectors())
@@ -296,17 +423,35 @@ class WriteBoard(FloatLayout):
         x = g.bbox['minx']
         y = g.bbox['miny']
         w = Widget(pos=(x, y), size=(g.width, g.height))
-        if self.digit1.collide_widget(w):
-            self.digit1.text = num
-        if self.digit2.collide_widget(w):
-            self.digit2.text = num
-        if self.digit3.collide_widget(w):
-            self.digit3.text = num
-        if self.digit4.collide_widget(w):
-            self.digit4.text = num
+        for i in range(0, 10):
+            digit = self.ids['_mydigit%d' % i]
+            if digit.collide_widget(w):
+                name = digit.text
+                break
 
-        if self.check():
-            Clock.schedule_once(lambda dt: self.new(), 1)
+        if num == name:
+            text = '[b]Exist[/b]'
+        else:
+            text = '[b]Update[/b]'
+
+            self.recognizer.add_gesture(name, g.get_vectors())
+
+        g._result_label = Label(text=text, markup=True, size_hint=(None, None),
+                                center=(g.bbox['minx'], g.bbox['miny']))
+        self.surface.add_widget(g._result_label)
+        self.root.app.speak(name)
+
+    def load(self):
+        # FIXME: Change filter to trig filechooser refreshing
+        self.load_popup.ids.filechooser.filters = ['*._kg']
+        self.load_popup.open()
+        self.load_popup.ids.filechooser.filters = ['*.kg']
+
+    def save(self):
+        self.save_popup.open()
+
+    def clear(self):
+        self.recognizer.db = []
 
 
 class RootWidget(FloatLayout):
@@ -316,6 +461,7 @@ class RootWidget(FloatLayout):
     manager = ObjectProperty()
     board = ObjectProperty()
     settings = ObjectProperty()
+    mygesture = ObjectProperty()
 
     def __init__(self, **kwargs):
         super(RootWidget, self).__init__(**kwargs)
