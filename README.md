@@ -1,11 +1,11 @@
 iWriteIt - You Like?
 ====================
 
-An application for Kids to practice Addition and Substraction skills. 
-It utilizes Kivy Gesture recogition, especially for `multistroke`
+An application for Kids to practice Addition and Subtraction skills. 
+It utilizes Kivy Gesture recognition, especially for `multistroke`
 gesture recognition was just introduced in master branch (1.8.1-dev).
 
-Initially, I've used Tesseract-OCR to recoginize hand writing.
+Initially, I've used Tesseract-OCR to recognize hand writing.
 However, we also need to train it for difference hand writing styles
 and is not easily compare to Kivy Gesture recognition process.
 
@@ -23,7 +23,7 @@ PREREQUISITE
 
 * Kivy master branch (1.8.1-dev) for Multistroke gesture
 
-    (if you still use stable branch (1.8.0) just apply for only the `multistroke` patch)
+    (if you still use stable branch (1.8.0) you need to patch for `multistroke` feature)
 
 * plyer for Text to Speech (TTS)
 
@@ -31,7 +31,7 @@ PREREQUISITE
     pip install plyer
     ```
 
-    *NOTE THAT: On Windows and Linux also requires eSpeak (http://espeak.sourceforge.net/)*
+    *NOTE THAT: On Windows and Linux depended on eSpeak (http://espeak.sourceforge.net/)*
 
 TESTED TARGET
 -------------
@@ -43,9 +43,15 @@ TESTED TARGET
 * Linux
     - Tested on Ubuntu 12.10 (32-bit)
 
-* Android Target
+* Android
     - Tested on 2.3.6 (Motorola Defy)
     - Tested on 4.2.2 (Samsung Galaxy Note 8)
+
+* MacOSX
+    TBD
+
+* iOS
+    TBD
 
 SOURCE CODE
 -----------
@@ -55,34 +61,39 @@ SOURCE CODE
 PRE-BUILD BINARIES VERSION
 ----------------
 
-Pre-built binary versions will available at :-
+* Android
+  
+    [iWriteIt-0.9.0-debug.apk](https://www.dropbox.com/s/s3jthisv7a71ggd/iWriteIt-0.9.0-debug.apk)
 
-https://www.dropbox.com/sh/csp47vb5v2xa22v/AADSU-9A7xXwhctxAV7dCYRCa
+* Windows 8/7 (Stanalone executable file, includes all dependencies)
+
+    [iWriteIt.exe](https://www.dropbox.com/s/3hmfl2mb9uj283m/iWriteIt-0.9.0.exe)
+    
+    For more Pre-built binary versions will available at :-
+
+    https://www.dropbox.com/sh/csp47vb5v2xa22v/AADSU-9A7xXwhctxAV7dCYRCa
 
 TODO
 ----
 
 * User profile for specific gesture data
-* Statistics
+* Timer, score and statistics
+* More number practical skills (eg. sequence, multiply, ...)
 * Localize number (eg. Thai)
 * ...
 
 BUILD & PACKAGING
 -----------------
 
-* Windows
+* Windows / MacOSX / Linux (TBD)
 
-    TBD (PyInstaller?)
+    Using PyInstaller 2.1
 
-* Linux
+    ```
+    python ..\PyInstaller-2.1\pyinstaller.py bin\iWriteIt.spec
+    ```
 
-    TBD (PyInstaller?)
-
-* MacOSX
-
-    TBD (PyInstaller?)
-
-* Android (Python for Android)
+* Android (using Python for Android)
 
     ```
     ./build.py --dir /opt/projects/iWriteIt --name "iWriteIt" --package com.gurucafe.iwriteit --version 0.9.0 --orientation landscape --icon /opt/projects/iWriteIt/graphics/icon-128.png debug
