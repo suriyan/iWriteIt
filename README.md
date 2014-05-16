@@ -22,6 +22,23 @@ Please visit the following link to see how does it working :-
 
 http://1drv.ms/1nQKnGx
 
+HISTORY
+-------
+
+* 2014/05/15 (1.0.0)
+    - Implement my gesture load/save/update
+
+* 2014/05/14 (0.9.0)
+    - Initial release
+
+TODO
+----
+
+* User profile for specific gesture data
+* Timer, score and statistics
+* More number practical skills (eg. sequence, multiply, ...)
+* Localize number (ex. Thai)
+* ...
 
 PREREQUISITE
 ------------
@@ -30,13 +47,15 @@ PREREQUISITE
 
     (if you still use stable branch (1.8.0) you need to patch for `multistroke` feature)
 
-* plyer for Text to Speech (TTS)
+* `plyer` for Text to Speech (TTS)
 
-    ```
-    pip install plyer
+    ``
+    pip install -e git+https://github.com/kivy/plyer#egg=plyer
     ```
 
-    *NOTE THAT: On Windows and Linux depended on eSpeak (http://espeak.sourceforge.net/)*
+    *REMARKS*
+    - `plyer` in PyPi is NOT up-to-date, please install from git repository
+    - On Windows and Linux depended on eSpeak (http://espeak.sourceforge.net/)
 
 TESTED TARGET
 -------------
@@ -88,27 +107,9 @@ PRE-BUILD BINARIES VERSION
 
     [iWriteIt-0.9.0.dmg](https://www.dropbox.com/s/bng1rnq27utdovk/iWriteIt-0.9.0.dmg)
 
-    For more Pre-built binary versions will available at :-
+    For more recently Pre-built binary version will available at :-
 
     https://www.dropbox.com/sh/csp47vb5v2xa22v/AADSU-9A7xXwhctxAV7dCYRCa
-
-HISTORY
--------
-
-* 2014/05/15 (1.0.0)
-    - Implement my gesture load/save/update
-
-* 2014/05/14 (0.9.0)
-    - Initial release
-
-TODO
-----
-
-* User profile for specific gesture data
-* Timer, score and statistics
-* More number practical skills (eg. sequence, multiply, ...)
-* Localize number (ex. Thai)
-* ...
 
 BUILD & PACKAGING
 -----------------
@@ -124,7 +125,7 @@ BUILD & PACKAGING
 * Android (using Python for Android)
 
     ```
-    ./build.py --dir /opt/projects/iWriteIt --name "iWriteIt" --package com.gurucafe.iwriteit --version 0.9.0 --orientation landscape --icon /opt/projects/iWriteIt/graphics/icon-128.png debug
+    ./build.py --dir /opt/projects/iWriteIt --name "iWriteIt" --package com.gurucafe.iwriteit --version 1.0.0 --orientation landscape --icon /opt/projects/iWriteIt/graphics/icon-128.png debug
     ```
 
     See http://kivy.org/docs/guide/packaging-android.html for more detail
