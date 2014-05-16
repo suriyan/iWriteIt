@@ -49,7 +49,7 @@ PREREQUISITE
 
 * `plyer` for Text to Speech (TTS)
 
-    ``
+    ```
     pip install -e git+https://github.com/kivy/plyer#egg=plyer
     ```
 
