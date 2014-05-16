@@ -88,16 +88,19 @@ PRE-BUILD BINARIES VERSION
 * Android
   
     [iWriteIt-1.0.0-debug.apk](https://www.dropbox.com/s/8ul1cnlnzz962nh/iWriteIt-1.0.0-debug.apk)
+
     [iWriteIt-0.9.0-debug.apk](https://www.dropbox.com/s/s3jthisv7a71ggd/iWriteIt-0.9.0-debug.apk)
 
 * Windows 8/7/XP (Standalone executable file, includes all dependencies)
 
     [iWriteIt-1.0.0.exe](https://www.dropbox.com/s/ian3b3crqn64sye/iWriteIt-1.0.0.exe)    
+
     [iWriteIt-0.9.0.exe](https://www.dropbox.com/s/3hmfl2mb9uj283m/iWriteIt-0.9.0.exe)
 
 * Linux (Standalone executable file, but excludes `espeak` and `gstreamer`)
 
     [iWriteIt-1.0.0.bin](https://www.dropbox.com/s/dneikody4fupu54/iWriteIt-1.0.0.bin)
+
     [iWriteIt-0.9.0.bin](https://www.dropbox.com/s/2h6tn3kk27wn1h2/iWriteIt-0.9.0.bin)
 
     On Ubuntu you can install `espeak` and `gstreamer` with the following command :-
@@ -107,7 +110,9 @@ PRE-BUILD BINARIES VERSION
     ```
 
 * Mac OSX
+
     [iWriteIt-1.0.0.dmg](https://www.dropbox.com/s/ngj6iebyecuvcuh/iWriteIt-1.0.0.dmg)
+
     [iWriteIt-0.9.0.dmg](https://www.dropbox.com/s/bng1rnq27utdovk/iWriteIt-0.9.0.dmg)
 
     For more recently Pre-built binary version will available at :-
