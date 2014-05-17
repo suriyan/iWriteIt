@@ -40,23 +40,6 @@ TODO
 * Localize number (ex. Thai)
 * ...
 
-PREREQUISITE
-------------
-
-* Kivy master branch (1.8.1-dev) for Multistroke gesture
-
-    (if you still use stable branch (1.8.0) you need to patch for `multistroke` feature)
-
-* `plyer` for Text to Speech (TTS)
-
-    ```
-    pip install -e git+https://github.com/kivy/plyer#egg=plyer
-    ```
-
-    *REMARKS*
-    - `plyer` in PyPi is NOT up-to-date, please install from git repository
-    - On Windows and Linux depended on eSpeak (http://espeak.sourceforge.net/)
-
 TESTED TARGET
 -------------
 
@@ -76,11 +59,6 @@ TESTED TARGET
     - Tested on 10.8.5
 
 * iOS (TBD)
-
-SOURCE CODE
------------
-
-    https://github.com/suriyan/iWriteIt
 
 PRE-BUILD BINARIES VERSION
 ----------------
@@ -118,6 +96,28 @@ PRE-BUILD BINARIES VERSION
     For more recently Pre-built binary version will available at :-
 
     https://www.dropbox.com/sh/csp47vb5v2xa22v/AADSU-9A7xXwhctxAV7dCYRCa
+
+SOURCE CODE
+-----------
+
+    https://github.com/suriyan/iWriteIt
+
+PREREQUISITE
+------------
+
+* Kivy master branch (1.8.1-dev) for Multistroke gesture
+
+    (if you still use stable branch (1.8.0) you need to patch for `multistroke` feature)
+
+* `plyer` for Text to Speech (TTS)
+
+    ```
+    pip install -e git+https://github.com/kivy/plyer#egg=plyer
+    ```
+
+    *REMARKS*
+    - `plyer` in PyPi is NOT up-to-date, please install from git repository
+    - On Windows and Linux requires [eSpeak](http://espeak.sourceforge.net/)
 
 BUILD & PACKAGING
 -----------------
