@@ -486,7 +486,6 @@ class iWriteItApp(App):
     def build(self):
         music = "sounds/music.%s" % ('wav' if platform == 'macosx' else 'ogg')
         self.music = SoundLoader.load(music)
-        print self.music
         self.play_music()
         self.root = RootWidget(app=self)
         self.speak("Welcome to I Write It")
